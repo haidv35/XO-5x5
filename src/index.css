@@ -2,6 +2,9 @@
     margin:0;
     padding:0;
 }
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+}
 .main{
     display: table;
     margin:0 auto;

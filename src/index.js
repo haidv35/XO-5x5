@@ -56,6 +56,8 @@ class Board extends React.Component {
 class Game extends React.Component {
     constructor(props) {
         super(props);
+        this.player1Score = 0;
+        this.player2Score = 0;
         this.state = {
             history: [
                 {
@@ -63,8 +65,22 @@ class Game extends React.Component {
                 }
             ],
             stepNumber: 0,
-            playerX: true
+            playerX: true,
+            score: {
+                player1: 0,
+                player2: 0
+            }
         };
+    }
+    updateScore() {
+        let winner = calculateWinner(
+            this.state.history[this.state.stepNumber].squares
+        );
+        if (winner === "X") {
+            this.player1Score += 1;
+        } else if (winner === "O") {
+            this.player2Score += 1;
+        }
     }
     handleClick(i) {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
@@ -95,6 +111,7 @@ class Game extends React.Component {
         }
     }
     render() {
+        this.updateScore();
         const history = this.state.history;
         const current = history[this.state.stepNumber];
         const squares = current.squares;
@@ -119,24 +136,35 @@ class Game extends React.Component {
             <Fragment>
                 <div className="status-bar">
                     {winner ? (
-                        <div className="status" style={{color: "red"}}>
-                            Winner: {winner}
-                        </div>
+                        <Fragment>
+                            <div className="status" style={{color: "red"}}>
+                                Winner: {winner}
+                            </div>
+                            <button
+                                className="rollback"
+                                onClick={() => this.jumpTo(0)}
+                            >
+                                Chơi lại
+                            </button>
+                        </Fragment>
                     ) : draw === true ? (
                         <div className="status">Draw</div>
                     ) : (
                         <div className="status">Player: {player}</div>
                     )}
-                    <button className="rollback" onClick={() => this.jumpTo(0)}>
-                        Bắt đầu
-                    </button>
                 </div>
                 <Board
                     squares={squares}
                     playerX={this.state.playerX}
                     onClick={i => this.handleClick(i)}
                 />
-                <div className="sidebar">{moves}</div>
+                <div className="sidebar">
+                    <p>X - O</p>
+                    <p>
+                        {this.player1Score} - {this.player2Score}
+                    </p>
+                    {moves}
+                </div>
             </Fragment>
         );
     }
@@ -172,16 +200,12 @@ function calculateWinner(squares) {
     return null;
 }
 function checkDraw(squares) {
-    let checkDraw = true;
     for (let i = 0; i < 25; i++) {
         if (squares[i] === null) {
-            checkDraw = false;
+            return null;
         }
     }
-    if (checkDraw) {
-        return true;
-    }
-    return null;
+    return true;
 }
 
 ReactDOM.render(<Game />, document.getElementById("root"));
