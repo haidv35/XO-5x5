@@ -12,9 +12,6 @@ class Square extends React.Component {
     }
 }
 class Board extends React.Component {
-    constructor(props) {
-        super(props);
-    }
     renderSquare(i) {
         return (
             <Square
@@ -136,22 +133,17 @@ class Game extends React.Component {
             <Fragment>
                 <div className="status-bar">
                     {winner ? (
-                        <Fragment>
-                            <div className="status" style={{color: "red"}}>
-                                Winner: {winner}
-                            </div>
-                            <button
-                                className="rollback"
-                                onClick={() => this.jumpTo(0)}
-                            >
-                                Chơi lại
-                            </button>
-                        </Fragment>
+                        <div className="status" style={{color: "red"}}>
+                            Winner: {winner}
+                        </div>
                     ) : draw === true ? (
                         <div className="status">Draw</div>
                     ) : (
                         <div className="status">Player: {player}</div>
                     )}
+                    <button className="rollback" onClick={() => this.jumpTo(0)}>
+                        Chơi lại
+                    </button>
                 </div>
                 <Board
                     squares={squares}
