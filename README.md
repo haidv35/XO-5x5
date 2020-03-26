@@ -1,4 +1,4 @@
-# XO-5x5
+# Game XO 5x5 With ReactJs
 In the project directory, you can run:
 
 ### `yarn start`
